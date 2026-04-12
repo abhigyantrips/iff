@@ -1,0 +1,26 @@
+{
+  "name": "iff",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-04-12",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "iff-db",
+      "database_id": "c51860f9-607b-45f8-bfb5-33d4f329c220"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "bucket_name": "iff-storage",
+      "binding": "STORAGE"
+    }
+  ]
+}
