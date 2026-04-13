@@ -10,14 +10,9 @@ import {
   TextStrikethroughIcon,
   ListBulletsIcon,
   ListNumbersIcon,
-  QuotesIcon,
   CodeIcon,
   ArrowUUpLeftIcon,
   ArrowUUpRightIcon,
-  TextHOneIcon,
-  TextHTwoIcon,
-  TextHThreeIcon,
-  ParagraphIcon,
 } from "@phosphor-icons/react";
 
 interface RichTextEditorProps {
@@ -29,6 +24,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [StarterKit],
     content,
+    immediatelyRender: false,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
@@ -42,54 +38,15 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
 
   if (!editor) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center rounded-md border bg-muted/50">
+      <div className="flex min-h-[400px] items-center justify-center border bg-muted/50">
         <span className="text-muted-foreground">Loading editor...</span>
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-md border bg-background">
+    <div className="overflow-hidden border bg-background">
       <div className="flex flex-wrap items-center gap-1 border-b bg-muted/50 p-2">
-        <Button
-          type="button"
-          variant={editor.isActive("heading", { level: 1 }) ? "secondary" : "ghost"}
-          size="sm"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          className="size-8 p-0"
-        >
-          <TextHOneIcon className="size-4" />
-        </Button>
-        <Button
-          type="button"
-          variant={editor.isActive("heading", { level: 2 }) ? "secondary" : "ghost"}
-          size="sm"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          className="size-8 p-0"
-        >
-          <TextHTwoIcon className="size-4" />
-        </Button>
-        <Button
-          type="button"
-          variant={editor.isActive("heading", { level: 3 }) ? "secondary" : "ghost"}
-          size="sm"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          className="size-8 p-0"
-        >
-          <TextHThreeIcon className="size-4" />
-        </Button>
-        <Button
-          type="button"
-          variant={editor.isActive("paragraph") ? "secondary" : "ghost"}
-          size="sm"
-          onClick={() => editor.chain().focus().setParagraph().run()}
-          className="size-8 p-0"
-        >
-          <ParagraphIcon className="size-4" />
-        </Button>
-
-        <Separator orientation="vertical" className="mx-1 h-6" />
-
         <Button
           type="button"
           variant={editor.isActive("bold") ? "secondary" : "ghost"}
@@ -146,15 +103,6 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
           className="size-8 p-0"
         >
           <ListNumbersIcon className="size-4" />
-        </Button>
-        <Button
-          type="button"
-          variant={editor.isActive("blockquote") ? "secondary" : "ghost"}
-          size="sm"
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className="size-8 p-0"
-        >
-          <QuotesIcon className="size-4" />
         </Button>
 
         <Separator orientation="vertical" className="mx-1 h-6" />
