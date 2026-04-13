@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # cloudflare
 .wrangler
+
+# IDE
+.agents/
+.claude/
