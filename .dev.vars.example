@@ -1,0 +1,15 @@
+# Better Auth Configuration
+BETTER_AUTH_SECRET=your-secret-key-at-least-32-characters-long
+BETTER_AUTH_URL=http://localhost:4321
+
+# Google OAuth (from Google Cloud Console)
+GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# Allowed emails (comma-separated list of emails that can access admin)
+ALLOWED_EMAILS=admin@example.com,user@example.com
+
+# GitHub API (for content editing)
+GITHUB_TOKEN=ghp_your_personal_access_token
+GITHUB_REPO=owner/repo
+GITHUB_BRANCH=main

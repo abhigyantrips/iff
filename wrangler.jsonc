@@ -22,5 +22,8 @@
       "bucket_name": "iff-storage",
       "binding": "STORAGE"
     }
-  ]
+  ],
+  "vars": {
+    "PUBLIC_AUTH_URL": "http://localhost:4321"
+  }
 }
