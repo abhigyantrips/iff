@@ -1,0 +1,8 @@
+---
+import AdminLayout from "@/layouts/admin-layout.astro";
+import { CampaignForm } from "@/components/campaign-form";
+---
+
+<AdminLayout title="New Campaign">
+  <CampaignForm client:load mode="create" />
+</AdminLayout>

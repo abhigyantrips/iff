@@ -1,30 +1,74 @@
 ---
-
+import BaseLayout from "@/layouts/base-layout.astro";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  EnvelopeSimpleIcon,
+  ShieldCheckIcon,
+} from "@phosphor-icons/react";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link
-			rel="icon"
-			type="image/svg+xml"
-			href="/favicon.svg"
-		/>
-		<link
-			rel="icon"
-			href="/favicon.ico"
-		/>
-		<meta
-			name="viewport"
-			content="width=device-width"
-		/>
-		<meta
-			name="generator"
-			content={Astro.generator}
-		/>
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Email Campaign Manager">
+  <main class="flex min-h-screen flex-col items-center justify-center px-4">
+    <div class="mx-auto max-w-2xl text-center">
+      <div class="mb-8 flex justify-center">
+        <div class="rounded-full bg-primary/10 p-4">
+          <EnvelopeSimpleIcon className="size-12 text-primary" weight="duotone" />
+        </div>
+      </div>
+      
+      <h1 class="font-heading text-4xl font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl">
+        Email Campaign Manager
+      </h1>
+      
+      <p class="mt-6 text-lg text-muted-foreground">
+        Create, manage, and send email campaigns through simple mailto: links.
+        Perfect for quick email outreach without complex email infrastructure.
+      </p>
+      
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <Button asChild size="lg" className="gap-2">
+          <a href="/admin/campaigns">
+            <ShieldCheckIcon data-icon="inline-start" weight="fill" />
+            Admin Dashboard
+          </a>
+        </Button>
+      </div>
+      
+      <div class="mt-16 grid gap-6 md:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Create Campaigns</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription>
+              Build email campaigns with a rich text editor and manage recipients easily.
+            </CardDescription>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Share Links</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription>
+              Generate shareable links that open pre-filled emails in any email client.
+            </CardDescription>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Version Control</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription>
+              All campaigns are stored as markdown files in your GitHub repository.
+            </CardDescription>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

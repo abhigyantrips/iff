@@ -1,0 +1,34 @@
+---
+import { env } from "cloudflare:workers";
+import AdminLayout from "@/layouts/admin-layout.astro";
+import { CampaignForm } from "@/components/campaign-form";
+import { createDb } from "@/lib/db";
+import { getCampaignBySlug } from "@/lib/campaigns";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect("/admin/campaigns");
+}
+
+const db = createDb(env.DB);
+const campaign = await getCampaignBySlug(db, slug);
+
+if (!campaign) {
+  return Astro.redirect("/admin/campaigns");
+}
+
+const initialData = {
+  title: campaign.title,
+  description: campaign.description,
+  date: campaign.date.toISOString().split("T")[0],
+  emailTo: campaign.emailTo,
+  emailCc: campaign.emailCc,
+  emailBcc: campaign.emailBcc,
+  content: campaign.content || "<p>Start writing your email content here...</p>",
+};
+---
+
+<AdminLayout title={`Edit: ${campaign.title}`}>
+  <CampaignForm client:load mode="edit" slug={campaign.slug} initialData={initialData} />
+</AdminLayout>

@@ -1,0 +1,32 @@
+---
+import { env } from "cloudflare:workers";
+import AdminLayout from "@/layouts/admin-layout.astro";
+import { CampaignList } from "@/components/campaign-list";
+import { createDb } from "@/lib/db";
+import { getAllCampaigns } from "@/lib/campaigns";
+
+const db = createDb(env.DB);
+const campaignsData = await getAllCampaigns(db);
+
+const campaigns = campaignsData.map((campaign) => ({
+  id: campaign.slug,
+  title: campaign.title,
+  description: campaign.description,
+  date: campaign.date.toISOString(),
+  emailTo: campaign.emailTo,
+  emailCc: campaign.emailCc,
+  emailBcc: campaign.emailBcc,
+}));
+---
+
+<AdminLayout title="Campaigns">
+  <div class="mx-auto max-w-7xl px-4 py-8">
+    <div class="mb-8">
+      <h1 class="font-heading text-3xl font-bold tracking-tight">Email Campaigns</h1>
+      <p class="mt-2 text-muted-foreground">
+        Create and manage email campaigns that can be sent via mailto: links.
+      </p>
+    </div>
+    <CampaignList client:load campaigns={campaigns} />
+  </div>
+</AdminLayout>
