@@ -23,30 +23,24 @@ const callbackUrl = Astro.url.searchParams.get("callbackUrl") || "/admin/campaig
   </head>
   <body class="min-h-screen font-sans antialiased flex items-center justify-center" style="background-color: rgb(23, 23, 23);">
     <div class="mx-auto max-w-md w-full px-6">
-      <div class="flex flex-col items-center text-center mb-10">
-        <a href="/" class="mb-8">
-          <img src="/logo.svg" alt="Internet Freedom Foundation" class="h-20 w-auto" />
-        </a>
-        <h1 class="text-3xl font-bold tracking-tight text-white mb-3">
-          Campaign Manager
-        </h1>
-        <p class="text-gray-400 leading-relaxed">
-          Sign in with your authorized account to create and manage email campaigns for the Internet Freedom Foundation.
-        </p>
-      </div>
       
-      <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-8">
+      
+      <div class="bg-background border p-8">
         <div class="text-center mb-6">
-          <h2 class="text-lg font-semibold text-white mb-2">Welcome back</h2>
-          <p class="text-sm text-gray-500">
-            Log in to manage campaigns
+          <div class="flex flex-col items-center text-center mb-10">
+            <a href="/" >
+              <img src="/logo.svg" alt="Internet Freedom Foundation" class="h-20 w-auto invert" />
+            </a>
+          </div>
+          <p class="text-gray-400 leading-relaxed text-sm">
+            Sign in with your account to create/manage email campaigns for the <b>Internet Freedom Foundation</b>.
           </p>
         </div>
         
         <button
           id="google-signin"
           data-callback={callbackUrl}
-          class="w-full inline-flex items-center justify-center gap-3 rounded-lg bg-white px-4 py-3 text-sm font-medium text-zinc-900 shadow-sm transition-all hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+          class="w-full inline-flex cursor-pointer items-center justify-center gap-3 bg-gray-900 px-4 py-3 text-sm font-medium text-white shadow-sm transition-all hover:bg-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
         >
           <svg class="h-5 w-5" viewBox="0 0 24 24">
             <path

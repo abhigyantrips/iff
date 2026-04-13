@@ -68,7 +68,7 @@ export function RecipientFields({
           recipients.map((recipient, index) => (
             <div
               key={index}
-              className="flex flex-col gap-3 rounded-lg border bg-muted/30 p-4 sm:flex-row sm:items-end"
+              className="flex flex-col gap-3 border bg-muted/30 p-4 sm:flex-row sm:items-end"
             >
               <div className="flex-1">
                 <Label htmlFor={`${label}-name-${index}`} className="mb-2 flex items-center gap-1">

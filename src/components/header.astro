@@ -4,11 +4,11 @@ interface Props {
 }
 import { DonateButton } from "@/components/donate-button";
 const navLinks = [
-  { label: "About Us", href: "/about" },
-  { label: "Contact", href: "/contact" },
-  { label: "Our work", href: "/work" },
-  { label: "Join us", href: "/join" },
-  { label: "Updates", href: "/updates" },
+  { label: "About Us", href: "https://internetfreedom.in/about" },
+  { label: "Contact", href: "https://internetfreedom.in/contact" },
+  { label: "Our Work", href: "https://internetfreedom.in/work" },
+  { label: "Join Us", href: "https://internetfreedom.in/join" },
+  { label: "Updates", href: "https://internetfreedom.in/updates" },
 ];
 ---
 <div class="w-full bg-amber-500 text-zinc-900">
@@ -32,7 +32,7 @@ const navLinks = [
       {navLinks.map((link) => (
         <a
           href={link.href}
-          class="text-sm font-medium text-gray-300 transition-colors hover:text-white"
+          class="text-sm font-medium hidden md:block text-gray-300 transition-colors hover:text-white"
         >
           {link.label}
         </a>

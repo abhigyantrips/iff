@@ -49,7 +49,7 @@ export function AuthButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2 text-gray-300 hover:bg-zinc-800 hover:text-white">
+        <Button variant="ghost" size="sm" className="gap-2 text-gray-300 hover:bg-zinc-800 py-5 px-3 hover:text-white">
           <Avatar className="size-7">
             <AvatarImage src={user.image || undefined} alt={user.name || ""} />
             <AvatarFallback className="text-xs">{initials || <UserIcon />}</AvatarFallback>
