@@ -11,7 +11,7 @@ import {
   PaperPlaneTiltIcon,
   UsersIcon,
 } from "@phosphor-icons/react";
-import { generateMailtoLink, formatRecipientsDisplay } from "@/lib/mailto";
+import { generateMailtoLink } from "@/lib/mailto";
 
 interface Recipient {
   name: string;
@@ -27,6 +27,24 @@ interface CampaignViewProps {
   emailBcc: Recipient[];
   rawContent: string;
   autoRedirect?: boolean;
+}
+
+function RecipientLinks({ recipients }: { recipients: Recipient[] }) {
+  return (
+    <span className="flex flex-wrap gap-x-1">
+      {recipients.map((recipient, index) => (
+        <span key={recipient.email}>
+          <a
+            href={`mailto:${recipient.email}`}
+            className="text-primary hover:underline"
+          >
+            {recipient.name}
+          </a>
+          {index < recipients.length - 1 && <span>,</span>}
+        </span>
+      ))}
+    </span>
+  );
 }
 
 function markdownToHtml(markdown: string): string {
@@ -115,18 +133,24 @@ export function CampaignView({
         <CardContent className="flex flex-col gap-4">
           <div>
             <span className="text-sm font-medium text-muted-foreground">To:</span>
-            <p className="mt-1 text-sm">{formatRecipientsDisplay(emailTo)}</p>
+            <div className="mt-1 text-sm">
+              <RecipientLinks recipients={emailTo} />
+            </div>
           </div>
           {emailCc.length > 0 && (
             <div>
               <span className="text-sm font-medium text-muted-foreground">CC:</span>
-              <p className="mt-1 text-sm">{formatRecipientsDisplay(emailCc)}</p>
+              <div className="mt-1 text-sm">
+                <RecipientLinks recipients={emailCc} />
+              </div>
             </div>
           )}
           {emailBcc.length > 0 && (
             <div>
               <span className="text-sm font-medium text-muted-foreground">BCC:</span>
-              <p className="mt-1 text-sm">{formatRecipientsDisplay(emailBcc)}</p>
+              <div className="mt-1 text-sm">
+                <RecipientLinks recipients={emailBcc} />
+              </div>
             </div>
           )}
         </CardContent>

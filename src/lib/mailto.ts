@@ -34,3 +34,10 @@ export function generateMailtoLink(options: MailtoOptions): string {
 export function formatRecipientsDisplay(recipients: Recipient[]): string {
   return recipients.map((r) => `${r.name} <${r.email}>`).join(", ");
 }
+
+export function formatRecipientAsLink(recipient: Recipient): { name: string; href: string } {
+  return {
+    name: recipient.name,
+    href: `mailto:${recipient.email}`,
+  };
+}

@@ -163,23 +163,22 @@ export function CampaignList({ campaigns: initialCampaigns }: CampaignListProps)
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <Button variant="ghost" size="sm" asChild>
+                      <Button variant="secondary" size="sm" asChild>
                         <a href={`/campaigns/${campaign.id}`} target="_blank" rel="noopener">
                           <EyeIcon data-icon="inline-start" />
                           View
                         </a>
                       </Button>
-                      <Button variant="ghost" size="sm" asChild>
+                      <Button variant="secondary" size="sm" asChild>
                         <a href={`/admin/campaigns/${campaign.id}/edit`}>
                           <PencilSimpleIcon data-icon="inline-start" />
                           Edit
                         </a>
                       </Button>
                       <Button
-                        variant="ghost"
+                        variant="destructive"
                         size="sm"
                         onClick={() => handleDeleteClick(campaign)}
-                        className="text-destructive hover:text-destructive"
                       >
                         <TrashIcon data-icon="inline-start" />
                         Delete

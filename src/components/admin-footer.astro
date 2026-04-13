@@ -1,0 +1,17 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="w-full" style="background-color: rgb(23, 23, 23);">
+  <div class="container mx-auto px-4 py-6">
+    <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+      <a href="/admin/campaigns" class="flex items-center gap-3">
+        <img src="/logo.svg" alt="Internet Freedom Foundation" class="h-8 w-auto" />
+      </a>
+      
+      <p class="text-sm text-gray-400">
+        © {currentYear} Internet Freedom Foundation. Campaign Manager.
+      </p>
+    </div>
+  </div>
+</footer>

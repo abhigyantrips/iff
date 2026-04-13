@@ -25,17 +25,15 @@ const rawContent = campaign.content || "";
 ---
 
 <BaseLayout title={campaign.title} description={campaign.description}>
-  <main class="flex-1">
-    <CampaignView
-      client:load
-      title={campaign.title}
-      description={campaign.description}
-      date={campaign.date.toISOString()}
-      emailTo={campaign.emailTo}
-      emailCc={campaign.emailCc}
-      emailBcc={campaign.emailBcc}
-      rawContent={rawContent}
-      autoRedirect={autoRedirect}
-    />
-  </main>
+  <CampaignView
+    client:load
+    title={campaign.title}
+    description={campaign.description}
+    date={campaign.date.toISOString()}
+    emailTo={campaign.emailTo}
+    emailCc={campaign.emailCc}
+    emailBcc={campaign.emailBcc}
+    rawContent={rawContent}
+    autoRedirect={autoRedirect}
+  />
 </BaseLayout>

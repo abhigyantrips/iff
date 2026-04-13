@@ -1,7 +1,8 @@
 ---
 import "@/styles/global.css";
 import { Toaster } from "@/components/ui/sonner";
-import { AuthButton } from "@/components/auth-button";
+import AdminHeader from "@/components/admin-header.astro";
+import AdminFooter from "@/components/admin-footer.astro";
 
 interface Props {
   title: string;
@@ -25,27 +26,11 @@ const session = Astro.locals.session;
   </head>
   <body class="min-h-screen bg-background font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
-      <header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div class="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
-          <div class="flex items-center gap-6">
-            <a href="/admin/campaigns" class="font-heading text-lg font-bold text-foreground">
-              Campaign Manager
-            </a>
-            <nav class="hidden items-center gap-4 md:flex">
-              <a
-                href="/admin/campaigns"
-                class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Campaigns
-              </a>
-            </nav>
-          </div>
-          <AuthButton client:load />
-        </div>
-      </header>
+      <AdminHeader />
       <main class="flex-1">
         <slot />
       </main>
+      <AdminFooter />
     </div>
     <Toaster client:load richColors position="top-right" />
   </body>

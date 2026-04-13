@@ -18,7 +18,7 @@ export function AuthButton() {
 
   if (isPending) {
     return (
-      <Button variant="ghost" size="sm" disabled>
+      <Button variant="ghost" size="sm" disabled className="text-gray-300">
         Loading...
       </Button>
     );
@@ -30,7 +30,7 @@ export function AuthButton() {
         variant="outline"
         size="sm"
         onClick={() => signIn.social({ provider: "google" })}
-        className="gap-2"
+        className="gap-2 border-gray-600 bg-transparent text-gray-300 hover:bg-zinc-800 hover:text-white"
       >
         <GoogleLogoIcon data-icon="inline-start" weight="bold" />
         Sign in with Google
@@ -49,19 +49,19 @@ export function AuthButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2">
-          <Avatar className="size-6">
+        <Button variant="ghost" size="sm" className="gap-2 text-gray-300 hover:bg-zinc-800 hover:text-white">
+          <Avatar className="size-7">
             <AvatarImage src={user.image || undefined} alt={user.name || ""} />
             <AvatarFallback className="text-xs">{initials || <UserIcon />}</AvatarFallback>
           </Avatar>
-          <span className="hidden md:inline">{user.name}</span>
+          <span className="max-w-[200px] truncate">{user.name}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="w-72">
         <DropdownMenuLabel>
           <div className="flex flex-col gap-1">
             <span className="font-medium">{user.name}</span>
-            <span className="text-xs text-muted-foreground">{user.email}</span>
+            <span className="text-sm text-muted-foreground break-all">{user.email}</span>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
