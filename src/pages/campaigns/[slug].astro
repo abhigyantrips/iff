@@ -29,7 +29,7 @@ const rawContent = campaign.content || "";
     client:load
     title={campaign.title}
     description={campaign.description}
-    date={campaign.date.toISOString()}
+    lastDate={campaign.lastDate?.toISOString()}
     emailTo={campaign.emailTo}
     emailCc={campaign.emailCc}
     emailBcc={campaign.emailBcc}

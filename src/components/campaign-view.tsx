@@ -1,15 +1,21 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import {
-  CalendarBlankIcon,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   EnvelopeSimpleIcon,
   PaperPlaneTiltIcon,
   UsersIcon,
+  WarningCircleIcon,
 } from "@phosphor-icons/react";
 import { generateMailtoLink } from "@/lib/mailto";
 
@@ -21,7 +27,7 @@ interface Recipient {
 interface CampaignViewProps {
   title: string;
   description: string;
-  date: string;
+  lastDate?: string;
   emailTo: Recipient[];
   emailCc: Recipient[];
   emailBcc: Recipient[];
@@ -48,22 +54,62 @@ function RecipientLinks({ recipients }: { recipients: Recipient[] }) {
 }
 
 function markdownToHtml(markdown: string): string {
-  return markdown
-    .replace(/^### (.*$)/gim, "<h3>$1</h3>")
-    .replace(/^## (.*$)/gim, "<h2>$1</h2>")
-    .replace(/^# (.*$)/gim, "<h1>$1</h1>")
-    .replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>")
-    .replace(/\*(.*?)\*/gim, "<em>$1</em>")
-    .replace(/^\- (.*$)/gim, "<li>$1</li>")
-    .replace(/^\d+\. (.*$)/gim, "<li>$1</li>")
-    .replace(/\n\n/gim, "</p><p>")
-    .replace(/\n/gim, "<br>")
-    .replace(/^(.+)$/gim, "<p>$1</p>")
-    .replace(/<p><h/gim, "<h")
-    .replace(/<\/h(\d)><\/p>/gim, "</h$1>")
-    .replace(/<p><li>/gim, "<ul><li>")
-    .replace(/<\/li><\/p>/gim, "</li></ul>")
-    .replace(/<\/ul><ul>/gim, "");
+  const lines = markdown.split('\n');
+  const result: string[] = [];
+  let inList = false;
+  let listType: 'ul' | 'ol' | null = null;
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    
+    line = line
+      .replace(/^### (.*$)/i, "<h3>$1</h3>")
+      .replace(/^## (.*$)/i, "<h2>$1</h2>")
+      .replace(/^# (.*$)/i, "<h1>$1</h1>")
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.*?)\*/g, "<em>$1</em>");
+
+    const unorderedMatch = line.match(/^[-*]\s+(.*)$/);
+    const orderedMatch = line.match(/^\d+\.\s+(.*)$/);
+
+    if (unorderedMatch) {
+      if (!inList || listType !== 'ul') {
+        if (inList) result.push(listType === 'ol' ? '</ol>' : '</ul>');
+        result.push('<ul class="list-disc pl-6 space-y-1 my-3">');
+        inList = true;
+        listType = 'ul';
+      }
+      result.push(`<li>${unorderedMatch[1]}</li>`);
+    } else if (orderedMatch) {
+      if (!inList || listType !== 'ol') {
+        if (inList) result.push(listType === 'ol' ? '</ol>' : '</ul>');
+        result.push('<ol class="list-decimal pl-6 space-y-1 my-3">');
+        inList = true;
+        listType = 'ol';
+      }
+      result.push(`<li>${orderedMatch[1]}</li>`);
+    } else {
+      if (inList) {
+        result.push(listType === 'ol' ? '</ol>' : '</ul>');
+        inList = false;
+        listType = null;
+      }
+      
+      if (line.startsWith('<h')) {
+        result.push(line);
+      } else if (line.trim() === '') {
+        result.push('');
+      } else {
+        result.push(`<p>${line}</p>`);
+      }
+    }
+  }
+
+  if (inList) {
+    result.push(listType === 'ol' ? '</ol>' : '</ul>');
+  }
+
+  return result.join('\n').replace(/<\/p>\n<p>/g, '</p><p>').replace(/\n\n+/g, '\n');
 }
 
 function markdownToPlainText(markdown: string): string {
@@ -79,7 +125,7 @@ function markdownToPlainText(markdown: string): string {
 export function CampaignView({
   title,
   description,
-  date,
+  lastDate,
   emailTo,
   emailCc,
   emailBcc,
@@ -104,32 +150,60 @@ export function CampaignView({
     }
   }, [autoRedirect, mailtoLink]);
 
-  const formattedDate = new Date(date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const formattedLastDate = lastDate
+    ? new Date(lastDate).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : null;
+
+  const tooltipText = "Opens your default email client with the message pre-filled";
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
-      <div className="mb-8 text-center">
-        <Badge variant="secondary" className="mb-4">
-          <CalendarBlankIcon data-icon="inline-start" />
-          {formattedDate}
-        </Badge>
-        <h1 className="font-heading text-4xl font-bold tracking-tight text-foreground md:text-5xl">
-          {title}
-        </h1>
-        <p className="mt-4 text-lg text-muted-foreground">{description}</p>
+      <div className="mb-8">
+        <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+          <div className="flex-1">
+            <h1 className="font-heading text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+              {title}
+            </h1>
+            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
+          </div>
+          <div className="flex flex-col gap-2 md:shrink-0 md:pt-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button asChild size="lg" className="w-full gap-2 px-6 text-base md:w-auto">
+                    <a href={mailtoLink}>
+                      <PaperPlaneTiltIcon weight="fill" />
+                      Send Email
+                    </a>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="hidden md:block max-w-sm">
+                  {tooltipText}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <p className="text-center text-xs text-muted-foreground md:hidden">
+              {tooltipText}
+            </p>
+          </div>
+        </div>
+        
       </div>
 
-      <Card className="mb-8 border-2 border-primary/20 bg-gradient-to-br from-card to-muted/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <UsersIcon className="size-5 text-primary" />
-            Recipients
-          </CardTitle>
-        </CardHeader>
+      {formattedLastDate && (
+        <Alert variant="default" className="mb-6 border-amber-500/50 bg-amber-50 dark:bg-amber-950/20">
+          <WarningCircleIcon className="size-4 text-amber-600 dark:text-amber-400" />
+          <AlertDescription className="text-amber-800 dark:text-amber-200">
+            Last date to send this email: <strong>{formattedLastDate}</strong>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      <Card className="mb-8 border-2 border-primary/20 bg-primary/2">
         <CardContent className="flex flex-col gap-4">
           <div>
             <span className="text-sm font-medium text-muted-foreground">To:</span>
@@ -153,38 +227,17 @@ export function CampaignView({
               </div>
             </div>
           )}
+
+          <Separator className="my-2 h-0.5! bg-primary/10" />
+
+          <div>
+            <div
+              className="prose prose-stone dark:prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ __html: htmlContent }}
+            />
+          </div>
         </CardContent>
       </Card>
-
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <EnvelopeSimpleIcon className="size-5 text-primary" />
-            Email Content
-          </CardTitle>
-          <CardDescription>Preview of the email that will be sent</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div
-            className="prose prose-stone dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: htmlContent }}
-          />
-        </CardContent>
-      </Card>
-
-      <Separator className="my-8" />
-
-      <div className="flex flex-col items-center gap-4">
-        <Button asChild size="lg" className="gap-2 px-8 text-lg">
-          <a href={mailtoLink}>
-            <PaperPlaneTiltIcon data-icon="inline-start" weight="fill" />
-            Send Email
-          </a>
-        </Button>
-        <p className="text-center text-sm text-muted-foreground">
-          Clicking this button will open your default email client with the message pre-filled.
-        </p>
-      </div>
     </div>
   );
 }

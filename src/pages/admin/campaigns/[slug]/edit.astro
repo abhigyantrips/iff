@@ -21,7 +21,7 @@ if (!campaign) {
 const initialData = {
   title: campaign.title,
   description: campaign.description,
-  date: campaign.date.toISOString().split("T")[0],
+  lastDate: campaign.lastDate ? campaign.lastDate.toISOString().split("T")[0] : "",
   emailTo: campaign.emailTo,
   emailCc: campaign.emailCc,
   emailBcc: campaign.emailBcc,

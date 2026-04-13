@@ -5,7 +5,7 @@ export interface CampaignInput {
   title: string;
   description: string;
   content: string;
-  date: string;
+  lastDate?: string;
   emailTo: Recipient[];
   emailCc?: Recipient[];
   emailBcc?: Recipient[];
@@ -17,7 +17,7 @@ export interface Campaign {
   title: string;
   description: string;
   content: string;
-  date: Date;
+  lastDate: Date | null;
   emailTo: Recipient[];
   emailCc: Recipient[];
   emailBcc: Recipient[];
@@ -43,7 +43,7 @@ function rowToCampaign(row: CampaignTable): Campaign {
     title: row.title,
     description: row.description,
     content: row.content,
-    date: new Date(row.date * 1000),
+    lastDate: row.lastDate ? new Date(row.lastDate * 1000) : null,
     emailTo: JSON.parse(row.emailTo) as Recipient[],
     emailCc: JSON.parse(row.emailCc) as Recipient[],
     emailBcc: JSON.parse(row.emailBcc) as Recipient[],
@@ -95,7 +95,9 @@ export async function createCampaign(
   const id = generateId();
   const slug = slugify(input.title);
   const now = Math.floor(Date.now() / 1000);
-  const dateTimestamp = Math.floor(new Date(input.date).getTime() / 1000);
+  const lastDateTimestamp = input.lastDate
+    ? Math.floor(new Date(input.lastDate).getTime() / 1000)
+    : null;
 
   const existing = await getCampaignBySlug(db, slug);
   if (existing) {
@@ -108,7 +110,7 @@ export async function createCampaign(
     title: input.title,
     description: input.description,
     content: input.content,
-    date: dateTimestamp,
+    lastDate: lastDateTimestamp,
     emailTo: JSON.stringify(input.emailTo),
     emailCc: JSON.stringify(input.emailCc ?? []),
     emailBcc: JSON.stringify(input.emailBcc ?? []),
@@ -133,7 +135,9 @@ export async function updateCampaign(
 
   const newSlug = slugify(input.title);
   const now = Math.floor(Date.now() / 1000);
-  const dateTimestamp = Math.floor(new Date(input.date).getTime() / 1000);
+  const lastDateTimestamp = input.lastDate
+    ? Math.floor(new Date(input.lastDate).getTime() / 1000)
+    : null;
 
   if (newSlug !== slug) {
     const slugConflict = await getCampaignBySlug(db, newSlug);
@@ -149,7 +153,7 @@ export async function updateCampaign(
       title: input.title,
       description: input.description,
       content: input.content,
-      date: dateTimestamp,
+      lastDate: lastDateTimestamp,
       emailTo: JSON.stringify(input.emailTo),
       emailCc: JSON.stringify(input.emailCc ?? []),
       emailBcc: JSON.stringify(input.emailBcc ?? []),

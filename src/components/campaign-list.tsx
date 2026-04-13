@@ -39,7 +39,8 @@ interface Campaign {
   id: string;
   title: string;
   description: string;
-  date: string;
+  lastDate: string | null;
+  createdAt: string;
   emailTo: Recipient[];
   emailCc: Recipient[];
   emailBcc: Recipient[];
@@ -133,7 +134,8 @@ export function CampaignList({ campaigns: initialCampaigns }: CampaignListProps)
             <TableHeader>
               <TableRow>
                 <TableHead>Title</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead>Created</TableHead>
+                <TableHead>Deadline</TableHead>
                 <TableHead>Recipients</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -143,17 +145,25 @@ export function CampaignList({ campaigns: initialCampaigns }: CampaignListProps)
                 <TableRow key={campaign.id}>
                   <TableCell>
                     <div className="flex flex-col gap-1">
-                      <span className="font-medium">{campaign.title}</span>
+                      <span className="font-medium text-base">{campaign.title}</span>
                       <span className="text-sm text-muted-foreground line-clamp-1">
                         {campaign.description}
                       </span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="secondary" className="gap-1">
-                      <CalendarBlankIcon className="size-3" />
-                      {formatDate(campaign.date)}
-                    </Badge>
+                    <span className="text-sm text-muted-foreground">
+                      {formatDate(campaign.createdAt)}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    {campaign.lastDate ? (
+                      <span className="text-sm text-muted-foreground">
+                        {formatDate(campaign.lastDate)}
+                    </span>
+                    ) : (
+                      <span className="text-sm text-muted-foreground">—</span>
+                    )}
                   </TableCell>
                   <TableCell>
                     <span className="text-sm text-muted-foreground">
@@ -165,13 +175,13 @@ export function CampaignList({ campaigns: initialCampaigns }: CampaignListProps)
                     <div className="flex items-center justify-end gap-2">
                       <Button variant="secondary" size="sm" asChild>
                         <a href={`/campaigns/${campaign.id}`} target="_blank" rel="noopener">
-                          <EyeIcon data-icon="inline-start" />
+                          <EyeIcon />
                           View
                         </a>
                       </Button>
                       <Button variant="secondary" size="sm" asChild>
                         <a href={`/admin/campaigns/${campaign.id}/edit`}>
-                          <PencilSimpleIcon data-icon="inline-start" />
+                          <PencilSimpleIcon />
                           Edit
                         </a>
                       </Button>
@@ -180,7 +190,7 @@ export function CampaignList({ campaigns: initialCampaigns }: CampaignListProps)
                         size="sm"
                         onClick={() => handleDeleteClick(campaign)}
                       >
-                        <TrashIcon data-icon="inline-start" />
+                        <TrashIcon />
                         Delete
                       </Button>
                     </div>

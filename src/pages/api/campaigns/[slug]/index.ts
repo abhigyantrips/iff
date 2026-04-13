@@ -13,7 +13,7 @@ const recipientSchema = z.object({
 const campaignSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
-  date: z.string(),
+  lastDate: z.string().optional(),
   emailTo: z.array(recipientSchema).min(1),
   emailCc: z.array(recipientSchema).optional().default([]),
   emailBcc: z.array(recipientSchema).optional().default([]),

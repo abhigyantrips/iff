@@ -25,7 +25,7 @@ interface Recipient {
 interface CampaignFormData {
   title: string;
   description: string;
-  date: string;
+  lastDate: string;
   emailTo: Recipient[];
   emailCc: Recipient[];
   emailBcc: Recipient[];
@@ -41,7 +41,7 @@ interface CampaignFormProps {
 const defaultData: CampaignFormData = {
   title: "",
   description: "",
-  date: new Date().toISOString().split("T")[0],
+  lastDate: "",
   emailTo: [{ name: "", email: "" }],
   emailCc: [],
   emailBcc: [],
@@ -66,9 +66,6 @@ export function CampaignForm({ initialData, slug, mode }: CampaignFormProps) {
     }
     if (!formData.description.trim()) {
       return "Description is required";
-    }
-    if (!formData.date) {
-      return "Date is required";
     }
     if (formData.emailTo.length === 0) {
       return "At least one recipient is required";
@@ -237,16 +234,17 @@ export function CampaignForm({ initialData, slug, mode }: CampaignFormProps) {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="date">
-                Date <span className="text-destructive">*</span>
-              </Label>
+              <Label htmlFor="lastDate">Last Date (Optional)</Label>
               <Input
-                id="date"
+                id="lastDate"
                 type="date"
-                value={formData.date}
-                onChange={(e) => handleChange("date", e.target.value)}
+                value={formData.lastDate}
+                onChange={(e) => handleChange("lastDate", e.target.value)}
                 className="max-w-xs"
               />
+              <p className="text-xs text-muted-foreground">
+                If set, this will be shown as the deadline to send this email campaign
+              </p>
             </div>
           </CardContent>
         </Card>

@@ -58,7 +58,7 @@ export interface CampaignTable {
   title: string;
   description: string;
   content: string;
-  date: number;
+  lastDate: number | null;
   emailTo: string;
   emailCc: string;
   emailBcc: string;
