@@ -1,9 +1,13 @@
-import type { APIRoute } from "astro";
-import { env } from "cloudflare:workers";
-import { getSession } from "@/lib/get-auth";
-import { createDb } from "@/lib/db";
-import { getCampaignBySlug, updateCampaign, deleteCampaign } from "@/lib/campaigns";
-import { z } from "zod";
+import {
+  deleteCampaign,
+  getCampaignBySlug,
+  updateCampaign,
+} from '@/lib/campaigns';
+import { createDb } from '@/lib/db';
+import { getSession } from '@/lib/get-auth';
+import type { APIRoute } from 'astro';
+import { env } from 'cloudflare:workers';
+import { z } from 'zod';
 
 const recipientSchema = z.object({
   name: z.string().min(1),
@@ -23,9 +27,9 @@ const campaignSchema = z.object({
 export const GET: APIRoute = async (context) => {
   const slug = context.params.slug;
   if (!slug) {
-    return new Response(JSON.stringify({ error: "Slug is required" }), {
+    return new Response(JSON.stringify({ error: 'Slug is required' }), {
       status: 400,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 
@@ -34,42 +38,39 @@ export const GET: APIRoute = async (context) => {
     const campaign = await getCampaignBySlug(db, slug);
 
     if (!campaign) {
-      return new Response(JSON.stringify({ error: "Campaign not found" }), {
+      return new Response(JSON.stringify({ error: 'Campaign not found' }), {
         status: 404,
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
       });
     }
 
     return new Response(JSON.stringify(campaign), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error("Failed to fetch campaign:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to fetch campaign" }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    console.error('Failed to fetch campaign:', error);
+    return new Response(JSON.stringify({ error: 'Failed to fetch campaign' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };
 
 export const PUT: APIRoute = async (context) => {
   const session = await getSession(context);
   if (!session) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 
   const slug = context.params.slug;
   if (!slug) {
-    return new Response(JSON.stringify({ error: "Slug is required" }), {
+    return new Response(JSON.stringify({ error: 'Slug is required' }), {
       status: 400,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 
@@ -82,46 +83,40 @@ export const PUT: APIRoute = async (context) => {
 
     return new Response(JSON.stringify({ slug: campaign.slug }), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error("Failed to update campaign:", error);
+    console.error('Failed to update campaign:', error);
 
     if (error instanceof z.ZodError) {
       return new Response(
-        JSON.stringify({ error: "Invalid data", details: error.issues }),
+        JSON.stringify({ error: 'Invalid data', details: error.issues }),
         {
           status: 400,
-          headers: { "Content-Type": "application/json" },
+          headers: { 'Content-Type': 'application/json' },
         }
       );
     }
 
-    if (error instanceof Error && error.message.includes("not found")) {
-      return new Response(
-        JSON.stringify({ error: error.message }),
-        {
-          status: 404,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+    if (error instanceof Error && error.message.includes('not found')) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    if (error instanceof Error && error.message.includes("already exists")) {
-      return new Response(
-        JSON.stringify({ error: error.message }),
-        {
-          status: 409,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+    if (error instanceof Error && error.message.includes('already exists')) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 409,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     return new Response(
-      JSON.stringify({ error: "Failed to update campaign" }),
+      JSON.stringify({ error: 'Failed to update campaign' }),
       {
         status: 500,
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
       }
     );
   }
@@ -130,17 +125,17 @@ export const PUT: APIRoute = async (context) => {
 export const DELETE: APIRoute = async (context) => {
   const session = await getSession(context);
   if (!session) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 
   const slug = context.params.slug;
   if (!slug) {
-    return new Response(JSON.stringify({ error: "Slug is required" }), {
+    return new Response(JSON.stringify({ error: 'Slug is required' }), {
       status: 400,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 
@@ -150,26 +145,23 @@ export const DELETE: APIRoute = async (context) => {
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error("Failed to delete campaign:", error);
+    console.error('Failed to delete campaign:', error);
 
-    if (error instanceof Error && error.message.includes("not found")) {
-      return new Response(
-        JSON.stringify({ error: error.message }),
-        {
-          status: 404,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+    if (error instanceof Error && error.message.includes('not found')) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     return new Response(
-      JSON.stringify({ error: "Failed to delete campaign" }),
+      JSON.stringify({ error: 'Failed to delete campaign' }),
       {
         status: 500,
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
       }
     );
   }

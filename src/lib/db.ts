@@ -1,5 +1,5 @@
-import { Kysely } from "kysely";
-import { D1Dialect } from "kysely-d1";
+import { Kysely } from 'kysely';
+import { D1Dialect } from 'kysely-d1';
 
 export interface UserTable {
   id: string;

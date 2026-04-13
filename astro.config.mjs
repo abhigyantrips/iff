@@ -13,16 +13,6 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-    server: {
-      allowedHosts: ['192.168.109.80.nip.io'],
-      host: true,
-      port: 4321,
-      strictPort: true,
-      hmr: {
-        host: '192.168.109.80.nip.io',
-        port: 4321,
-      },
-    },
   },
 
   adapter: cloudflare(),

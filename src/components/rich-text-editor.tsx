@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import {
+  ArrowUUpLeftIcon,
+  ArrowUUpRightIcon,
+  CodeIcon,
+  ListBulletsIcon,
+  ListNumbersIcon,
   TextBIcon,
   TextItalicIcon,
   TextStrikethroughIcon,
-  ListBulletsIcon,
-  ListNumbersIcon,
-  CodeIcon,
-  ArrowUUpLeftIcon,
-  ArrowUUpRightIcon,
-} from "@phosphor-icons/react";
+} from '@phosphor-icons/react';
+import { EditorContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 
 interface RichTextEditorProps {
   content: string;
@@ -31,25 +31,25 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
     editorProps: {
       attributes: {
         class:
-          "prose prose-stone dark:prose-invert max-w-none min-h-[300px] p-4 focus:outline-none",
+          'prose prose-stone dark:prose-invert max-w-none min-h-[300px] p-4 focus:outline-none',
       },
     },
   });
 
   if (!editor) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center border bg-muted/50">
+      <div className="bg-muted/50 flex min-h-[400px] items-center justify-center border">
         <span className="text-muted-foreground">Loading editor...</span>
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden border bg-background">
-      <div className="flex flex-wrap items-center gap-1 border-b bg-muted/50 p-2">
+    <div className="bg-background overflow-hidden border">
+      <div className="bg-muted/50 flex flex-wrap items-center gap-1 border-b p-2">
         <Button
           type="button"
-          variant={editor.isActive("bold") ? "secondary" : "ghost"}
+          variant={editor.isActive('bold') ? 'secondary' : 'ghost'}
           size="sm"
           onClick={() => editor.chain().focus().toggleBold().run()}
           className="size-8 p-0"
@@ -58,7 +58,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
         </Button>
         <Button
           type="button"
-          variant={editor.isActive("italic") ? "secondary" : "ghost"}
+          variant={editor.isActive('italic') ? 'secondary' : 'ghost'}
           size="sm"
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className="size-8 p-0"
@@ -67,7 +67,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
         </Button>
         <Button
           type="button"
-          variant={editor.isActive("strike") ? "secondary" : "ghost"}
+          variant={editor.isActive('strike') ? 'secondary' : 'ghost'}
           size="sm"
           onClick={() => editor.chain().focus().toggleStrike().run()}
           className="size-8 p-0"
@@ -76,7 +76,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
         </Button>
         <Button
           type="button"
-          variant={editor.isActive("code") ? "secondary" : "ghost"}
+          variant={editor.isActive('code') ? 'secondary' : 'ghost'}
           size="sm"
           onClick={() => editor.chain().focus().toggleCode().run()}
           className="size-8 p-0"
@@ -88,7 +88,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
 
         <Button
           type="button"
-          variant={editor.isActive("bulletList") ? "secondary" : "ghost"}
+          variant={editor.isActive('bulletList') ? 'secondary' : 'ghost'}
           size="sm"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className="size-8 p-0"
@@ -97,7 +97,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
         </Button>
         <Button
           type="button"
-          variant={editor.isActive("orderedList") ? "secondary" : "ghost"}
+          variant={editor.isActive('orderedList') ? 'secondary' : 'ghost'}
           size="sm"
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className="size-8 p-0"

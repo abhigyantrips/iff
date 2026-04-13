@@ -1,14 +1,12 @@
-import { defineMiddleware } from "astro:middleware";
-import { getSession } from "@/lib/get-auth";
+import { getSession } from '@/lib/get-auth';
+import { defineMiddleware } from 'astro:middleware';
 
-const PROTECTED_PATHS = ["/admin"];
+const PROTECTED_PATHS = ['/admin'];
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
 
-  const isProtected = PROTECTED_PATHS.some((path) =>
-    pathname.startsWith(path)
-  );
+  const isProtected = PROTECTED_PATHS.some((path) => pathname.startsWith(path));
 
   if (isProtected) {
     const session = await getSession(context);

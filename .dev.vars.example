@@ -9,7 +9,3 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 # Allowed emails (comma-separated list of emails that can access admin)
 ALLOWED_EMAILS=admin@example.com,user@example.com
 
-# GitHub API (for content editing)
-GITHUB_TOKEN=ghp_your_personal_access_token
-GITHUB_REPO=owner/repo
-GITHUB_BRANCH=main

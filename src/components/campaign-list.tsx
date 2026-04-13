@@ -1,16 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Button } from '@/components/ui/button';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -18,17 +15,24 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+} from '@/components/ui/dialog';
 import {
-  CalendarBlankIcon,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
   EnvelopeSimpleIcon,
   EyeIcon,
   PencilSimpleIcon,
   PlusIcon,
   TrashIcon,
-} from "@phosphor-icons/react";
-import { toast } from "sonner";
+} from '@phosphor-icons/react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface Recipient {
   name: string;
@@ -50,10 +54,14 @@ interface CampaignListProps {
   campaigns: Campaign[];
 }
 
-export function CampaignList({ campaigns: initialCampaigns }: CampaignListProps) {
+export function CampaignList({
+  campaigns: initialCampaigns,
+}: CampaignListProps) {
   const [campaigns, setCampaigns] = useState(initialCampaigns);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [campaignToDelete, setCampaignToDelete] = useState<Campaign | null>(null);
+  const [campaignToDelete, setCampaignToDelete] = useState<Campaign | null>(
+    null
+  );
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeleteClick = (campaign: Campaign) => {
@@ -67,17 +75,17 @@ export function CampaignList({ campaigns: initialCampaigns }: CampaignListProps)
     setIsDeleting(true);
     try {
       const response = await fetch(`/api/campaigns/${campaignToDelete.id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete campaign");
+        throw new Error('Failed to delete campaign');
       }
 
       setCampaigns((prev) => prev.filter((c) => c.id !== campaignToDelete.id));
-      toast.success("Campaign deleted successfully");
+      toast.success('Campaign deleted successfully');
     } catch (error) {
-      toast.error("Failed to delete campaign");
+      toast.error('Failed to delete campaign');
       console.error(error);
     } finally {
       setIsDeleting(false);
@@ -87,10 +95,10 @@ export function CampaignList({ campaigns: initialCampaigns }: CampaignListProps)
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
     });
   };
 
@@ -98,7 +106,7 @@ export function CampaignList({ campaigns: initialCampaigns }: CampaignListProps)
     return (
       <Card className="border-dashed">
         <CardContent className="flex flex-col items-center justify-center py-16">
-          <EnvelopeSimpleIcon className="mb-4 size-12 text-muted-foreground" />
+          <EnvelopeSimpleIcon className="text-muted-foreground mb-4 size-12" />
           <CardTitle className="mb-2 text-xl">No campaigns yet</CardTitle>
           <CardDescription className="mb-6 text-center">
             Create your first email campaign to get started.
@@ -145,36 +153,42 @@ export function CampaignList({ campaigns: initialCampaigns }: CampaignListProps)
                 <TableRow key={campaign.id}>
                   <TableCell>
                     <div className="flex flex-col gap-1">
-                      <span className="font-medium text-base">{campaign.title}</span>
-                      <span className="text-sm text-muted-foreground line-clamp-1">
+                      <span className="text-base font-medium">
+                        {campaign.title}
+                      </span>
+                      <span className="text-muted-foreground line-clamp-1 text-sm">
                         {campaign.description}
                       </span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-muted-foreground text-sm">
                       {formatDate(campaign.createdAt)}
                     </span>
                   </TableCell>
                   <TableCell>
                     {campaign.lastDate ? (
-                      <span className="text-sm text-muted-foreground">
+                      <span className="text-muted-foreground text-sm">
                         {formatDate(campaign.lastDate)}
-                    </span>
+                      </span>
                     ) : (
-                      <span className="text-sm text-muted-foreground">—</span>
+                      <span className="text-muted-foreground text-sm">—</span>
                     )}
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-muted-foreground text-sm">
                       {campaign.emailTo.length} recipient
-                      {campaign.emailTo.length !== 1 ? "s" : ""}
+                      {campaign.emailTo.length !== 1 ? 's' : ''}
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-2">
                       <Button variant="secondary" size="sm" asChild>
-                        <a href={`/campaigns/${campaign.id}`} target="_blank" rel="noopener">
+                        <a
+                          href={`/campaigns/${campaign.id}`}
+                          target="_blank"
+                          rel="noopener"
+                        >
                           <EyeIcon />
                           View
                         </a>
@@ -207,16 +221,23 @@ export function CampaignList({ campaigns: initialCampaigns }: CampaignListProps)
           <DialogHeader>
             <DialogTitle>Delete Campaign</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete "{campaignToDelete?.title}"? This action cannot be
-              undone.
+              Are you sure you want to delete "{campaignToDelete?.title}"? This
+              action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+            >
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleDeleteConfirm} disabled={isDeleting}>
-              {isDeleting ? "Deleting..." : "Delete"}
+            <Button
+              variant="destructive"
+              onClick={handleDeleteConfirm}
+              disabled={isDeleting}
+            >
+              {isDeleting ? 'Deleting...' : 'Delete'}
             </Button>
           </DialogFooter>
         </DialogContent>

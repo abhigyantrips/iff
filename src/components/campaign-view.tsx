@@ -1,23 +1,18 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  EnvelopeSimpleIcon,
-  PaperPlaneTiltIcon,
-  UsersIcon,
-  WarningCircleIcon,
-} from "@phosphor-icons/react";
-import { generateMailtoLink } from "@/lib/mailto";
+} from '@/components/ui/tooltip';
+import { generateMailtoLink } from '@/lib/mailto';
+import { PaperPlaneTiltIcon, WarningCircleIcon } from '@phosphor-icons/react';
+import { useEffect, useMemo } from 'react';
 
 interface Recipient {
   name: string;
@@ -61,13 +56,13 @@ function markdownToHtml(markdown: string): string {
 
   for (let i = 0; i < lines.length; i++) {
     let line = lines[i];
-    
+
     line = line
-      .replace(/^### (.*$)/i, "<h3>$1</h3>")
-      .replace(/^## (.*$)/i, "<h2>$1</h2>")
-      .replace(/^# (.*$)/i, "<h1>$1</h1>")
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*/g, "<em>$1</em>");
+      .replace(/^### (.*$)/i, '<h3>$1</h3>')
+      .replace(/^## (.*$)/i, '<h2>$1</h2>')
+      .replace(/^# (.*$)/i, '<h1>$1</h1>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>');
 
     const unorderedMatch = line.match(/^[-*]\s+(.*)$/);
     const orderedMatch = line.match(/^\d+\.\s+(.*)$/);
@@ -94,7 +89,7 @@ function markdownToHtml(markdown: string): string {
         inList = false;
         listType = null;
       }
-      
+
       if (line.startsWith('<h')) {
         result.push(line);
       } else if (line.trim() === '') {
@@ -109,16 +104,19 @@ function markdownToHtml(markdown: string): string {
     result.push(listType === 'ol' ? '</ol>' : '</ul>');
   }
 
-  return result.join('\n').replace(/<\/p>\n<p>/g, '</p><p>').replace(/\n\n+/g, '\n');
+  return result
+    .join('\n')
+    .replace(/<\/p>\n<p>/g, '</p><p>')
+    .replace(/\n\n+/g, '\n');
 }
 
 function markdownToPlainText(markdown: string): string {
   return markdown
-    .replace(/^#{1,6}\s*(.*$)/gim, "$1")
-    .replace(/\*\*(.*?)\*\*/gim, "$1")
-    .replace(/\*(.*?)\*/gim, "$1")
-    .replace(/^\- /gim, "• ")
-    .replace(/^\d+\.\s/gim, "")
+    .replace(/^#{1,6}\s*(.*$)/gim, '$1')
+    .replace(/\*\*(.*?)\*\*/gim, '$1')
+    .replace(/\*(.*?)\*/gim, '$1')
+    .replace(/^\- /gim, '• ')
+    .replace(/^\d+\.\s/gim, '')
     .trim();
 }
 
@@ -133,8 +131,11 @@ export function CampaignView({
   autoRedirect = false,
 }: CampaignViewProps) {
   const htmlContent = useMemo(() => markdownToHtml(rawContent), [rawContent]);
-  
-  const plainTextContent = useMemo(() => markdownToPlainText(rawContent), [rawContent]);
+
+  const plainTextContent = useMemo(
+    () => markdownToPlainText(rawContent),
+    [rawContent]
+  );
 
   const mailtoLink = generateMailtoLink({
     to: emailTo,
@@ -151,69 +152,81 @@ export function CampaignView({
   }, [autoRedirect, mailtoLink]);
 
   const formattedLastDate = lastDate
-    ? new Date(lastDate).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+    ? new Date(lastDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
       })
     : null;
 
-  const tooltipText = "Opens your default email client with the message pre-filled";
+  const tooltipText =
+    'Opens your default email client with the message pre-filled';
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div className="flex-1">
-            <h1 className="font-heading text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+            <h1 className="font-heading text-foreground text-4xl font-bold tracking-tight md:text-5xl">
               {title}
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
+            <p className="text-muted-foreground mt-4 text-lg">{description}</p>
           </div>
           <div className="flex flex-col gap-2 md:shrink-0 md:pt-2">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button asChild size="lg" className="w-full gap-2 px-6 text-base md:w-auto">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="w-full gap-2 px-6 text-base md:w-auto"
+                  >
                     <a href={mailtoLink}>
                       <PaperPlaneTiltIcon weight="fill" />
                       Send Email
                     </a>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent className="hidden md:block max-w-sm">
+                <TooltipContent className="hidden max-w-sm md:block">
                   {tooltipText}
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <p className="text-center text-xs text-muted-foreground md:hidden">
+            <p className="text-muted-foreground text-center text-xs md:hidden">
               {tooltipText}
             </p>
           </div>
         </div>
-        
       </div>
 
       {formattedLastDate && (
-        <Alert variant="default" className="mb-6 border-amber-500/50 bg-amber-50 dark:bg-amber-950/20">
-          <WarningCircleIcon className="size-4 text-amber-600 dark:text-amber-400" />
-          <AlertDescription className="text-amber-800 dark:text-amber-200">
-            Last date to send this email: <strong>{formattedLastDate}</strong>
+        <Alert
+          variant="default"
+          className="mb-6 flex items-center border-2 border-amber-600/30 bg-amber-50"
+        >
+          <WarningCircleIcon className="size-4 text-red-700!" />
+          <AlertDescription className="text-amber-600">
+            The last date to send this email is{' '}
+            <strong>{formattedLastDate}</strong>.
           </AlertDescription>
         </Alert>
       )}
 
-      <Card className="mb-8 border-2 border-primary/20 bg-primary/2">
+      <Card className="border-primary/20 bg-primary/2 mb-8 border-2">
         <CardContent className="flex flex-col gap-4">
           <div>
-            <span className="text-sm font-medium text-muted-foreground">To:</span>
+            <span className="text-muted-foreground text-sm font-medium">
+              To:
+            </span>
             <div className="mt-1 text-sm">
               <RecipientLinks recipients={emailTo} />
             </div>
           </div>
           {emailCc.length > 0 && (
             <div>
-              <span className="text-sm font-medium text-muted-foreground">CC:</span>
+              <span className="text-muted-foreground text-sm font-medium">
+                CC:
+              </span>
               <div className="mt-1 text-sm">
                 <RecipientLinks recipients={emailCc} />
               </div>
@@ -221,14 +234,16 @@ export function CampaignView({
           )}
           {emailBcc.length > 0 && (
             <div>
-              <span className="text-sm font-medium text-muted-foreground">BCC:</span>
+              <span className="text-muted-foreground text-sm font-medium">
+                BCC:
+              </span>
               <div className="mt-1 text-sm">
                 <RecipientLinks recipients={emailBcc} />
               </div>
             </div>
           )}
 
-          <Separator className="my-2 h-0.5! bg-primary/10" />
+          <Separator className="bg-primary/10 my-2 h-0.5!" />
 
           <div>
             <div

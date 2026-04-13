@@ -1,27 +1,27 @@
 ---
-import { env } from "cloudflare:workers";
-import BaseLayout from "@/layouts/base-layout.astro";
-import { CampaignView } from "@/components/campaign-view";
-import { createDb } from "@/lib/db";
-import { getCampaignBySlug } from "@/lib/campaigns";
+import { env } from 'cloudflare:workers';
+import BaseLayout from '@/layouts/base-layout.astro';
+import { CampaignView } from '@/components/campaign-view';
+import { createDb } from '@/lib/db';
+import { getCampaignBySlug } from '@/lib/campaigns';
 
 const { slug } = Astro.params;
 
 if (!slug) {
-  return Astro.redirect("/404");
+  return Astro.redirect('/404');
 }
 
 const db = createDb(env.DB);
 const campaign = await getCampaignBySlug(db, slug);
 
 if (!campaign) {
-  return Astro.redirect("/404");
+  return Astro.redirect('/404');
 }
 
 const url = new URL(Astro.request.url);
-const autoRedirect = url.searchParams.get("redirect") === "true";
+const autoRedirect = url.searchParams.get('redirect') === 'true';
 
-const rawContent = campaign.content || "";
+const rawContent = campaign.content || '';
 ---
 
 <BaseLayout title={campaign.title} description={campaign.description}>

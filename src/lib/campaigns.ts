@@ -1,5 +1,5 @@
-import type { Kysely } from "kysely";
-import type { Database, Recipient, CampaignTable } from "./db";
+import type { Kysely } from 'kysely';
+import type { CampaignTable, Database, Recipient } from './db';
 
 export interface CampaignInput {
   title: string;
@@ -28,8 +28,8 @@ export interface Campaign {
 function slugify(title: string): string {
   return title
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function generateId(): string {
@@ -52,11 +52,13 @@ function rowToCampaign(row: CampaignTable): Campaign {
   };
 }
 
-export async function getAllCampaigns(db: Kysely<Database>): Promise<Campaign[]> {
+export async function getAllCampaigns(
+  db: Kysely<Database>
+): Promise<Campaign[]> {
   const rows = await db
-    .selectFrom("campaign")
+    .selectFrom('campaign')
     .selectAll()
-    .orderBy("date", "desc")
+    .orderBy('date', 'desc')
     .execute();
 
   return rows.map(rowToCampaign);
@@ -67,9 +69,9 @@ export async function getCampaignBySlug(
   slug: string
 ): Promise<Campaign | null> {
   const row = await db
-    .selectFrom("campaign")
+    .selectFrom('campaign')
     .selectAll()
-    .where("slug", "=", slug)
+    .where('slug', '=', slug)
     .executeTakeFirst();
 
   return row ? rowToCampaign(row) : null;
@@ -80,9 +82,9 @@ export async function getCampaignById(
   id: string
 ): Promise<Campaign | null> {
   const row = await db
-    .selectFrom("campaign")
+    .selectFrom('campaign')
     .selectAll()
-    .where("id", "=", id)
+    .where('id', '=', id)
     .executeTakeFirst();
 
   return row ? rowToCampaign(row) : null;
@@ -118,7 +120,7 @@ export async function createCampaign(
     updatedAt: now,
   };
 
-  await db.insertInto("campaign").values(row).execute();
+  await db.insertInto('campaign').values(row).execute();
 
   return rowToCampaign(row);
 }
@@ -147,7 +149,7 @@ export async function updateCampaign(
   }
 
   await db
-    .updateTable("campaign")
+    .updateTable('campaign')
     .set({
       slug: newSlug,
       title: input.title,
@@ -159,12 +161,12 @@ export async function updateCampaign(
       emailBcc: JSON.stringify(input.emailBcc ?? []),
       updatedAt: now,
     })
-    .where("id", "=", existing.id)
+    .where('id', '=', existing.id)
     .execute();
 
   const updated = await getCampaignById(db, existing.id);
   if (!updated) {
-    throw new Error("Failed to retrieve updated campaign");
+    throw new Error('Failed to retrieve updated campaign');
   }
 
   return updated;
@@ -179,5 +181,5 @@ export async function deleteCampaign(
     throw new Error(`Campaign not found: ${slug}`);
   }
 
-  await db.deleteFrom("campaign").where("id", "=", existing.id).execute();
+  await db.deleteFrom('campaign').where('id', '=', existing.id).execute();
 }

@@ -1,8 +1,8 @@
 ---
-import "@/styles/global.css";
-import { Toaster } from "@/components/ui/sonner";
-import AdminHeader from "@/components/admin-header.astro";
-import AdminFooter from "@/components/admin-footer.astro";
+import '@/styles/global.css';
+import { Toaster } from '@/components/ui/sonner';
+import AdminHeader from '@/components/admin-header.astro';
+import AdminFooter from '@/components/admin-footer.astro';
 
 interface Props {
   title: string;
@@ -22,9 +22,9 @@ const session = Astro.locals.session;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title} | Admin</title>
+    <title>{title} | IFF Email Campaigns</title>
   </head>
-  <body class="min-h-screen bg-background font-sans antialiased">
+  <body class="bg-background min-h-screen font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
       <AdminHeader />
       <main class="flex-1">

@@ -7,22 +7,20 @@
     "directory": "./dist",
     "binding": "ASSETS"
   },
-  "observability": {
-    "enabled": true
-  },
+
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "iff-db",
-      "database_id": "c51860f9-607b-45f8-bfb5-33d4f329c220"
+      "database_id": "dcab9982-2d98-4d8e-9fc8-44afdd46f02b",
+      "remote": true
     }
   ],
-  "r2_buckets": [
-    {
-      "bucket_name": "iff-storage",
-      "binding": "STORAGE"
-    }
-  ],
+
+  "observability": {
+    "enabled": true
+  },
+
   "vars": {
     "PUBLIC_AUTH_URL": "http://localhost:4321"
   }

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,9 +9,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { GoogleLogoIcon, SignOutIcon, UserIcon } from "@phosphor-icons/react";
-import { signIn, signOut, useSession } from "@/lib/auth-client";
+} from '@/components/ui/dropdown-menu';
+import { signIn, signOut, useSession } from '@/lib/auth-client';
+import { GoogleLogoIcon, SignOutIcon, UserIcon } from '@phosphor-icons/react';
 
 export function AuthButton() {
   const { data: session, isPending } = useSession();
@@ -29,7 +29,7 @@ export function AuthButton() {
       <Button
         variant="outline"
         size="sm"
-        onClick={() => signIn.social({ provider: "google" })}
+        onClick={() => signIn.social({ provider: 'google' })}
         className="gap-2 border-gray-600 bg-transparent text-gray-300 hover:bg-zinc-800 hover:text-white"
       >
         <GoogleLogoIcon data-icon="inline-start" weight="bold" />
@@ -40,19 +40,25 @@ export function AuthButton() {
 
   const user = session.user;
   const initials = user.name
-    ?.split(" ")
+    ?.split(' ')
     .map((n) => n[0])
-    .join("")
+    .join('')
     .toUpperCase()
     .slice(0, 2);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2 text-gray-300 hover:bg-zinc-800 py-5 px-3 hover:text-white">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="gap-2 px-3 py-5 text-gray-300 hover:bg-zinc-800 hover:text-white"
+        >
           <Avatar className="size-7">
-            <AvatarImage src={user.image || undefined} alt={user.name || ""} />
-            <AvatarFallback className="text-xs">{initials || <UserIcon />}</AvatarFallback>
+            <AvatarImage src={user.image || undefined} alt={user.name || ''} />
+            <AvatarFallback className="text-xs">
+              {initials || <UserIcon />}
+            </AvatarFallback>
           </Avatar>
           <span className="max-w-[200px] truncate">{user.name}</span>
         </Button>
@@ -61,11 +67,16 @@ export function AuthButton() {
         <DropdownMenuLabel>
           <div className="flex flex-col gap-1">
             <span className="font-medium">{user.name}</span>
-            <span className="text-sm text-muted-foreground break-all">{user.email}</span>
+            <span className="text-muted-foreground text-sm break-all">
+              {user.email}
+            </span>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut()} className="text-destructive">
+        <DropdownMenuItem
+          onClick={() => signOut()}
+          className="text-destructive"
+        >
           <SignOutIcon data-icon="inline-start" />
           Sign out
         </DropdownMenuItem>

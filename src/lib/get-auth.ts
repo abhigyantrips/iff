@@ -1,11 +1,11 @@
-import type { APIContext } from "astro";
-import { env } from "cloudflare:workers";
-import { createDb } from "./db";
-import { createAuth } from "./auth";
+import type { APIContext } from 'astro';
+import { env } from 'cloudflare:workers';
+import { createAuth } from './auth';
+import { createDb } from './db';
 
 export function getAuth() {
   const db = createDb(env.DB);
-  
+
   return createAuth(db, {
     BETTER_AUTH_SECRET: env.BETTER_AUTH_SECRET,
     BETTER_AUTH_URL: env.BETTER_AUTH_URL,
@@ -26,7 +26,7 @@ export async function getSession(context: APIContext) {
 export async function requireAuth(context: APIContext) {
   const session = await getSession(context);
   if (!session) {
-    return context.redirect("/api/auth/signin/google");
+    return context.redirect('/api/auth/signin/google');
   }
   return session;
 }
