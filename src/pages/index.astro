@@ -1,89 +1,53 @@
 ---
 import BaseLayout from '@/layouts/base-layout.astro';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { EnvelopeSimpleIcon, ShieldCheckIcon } from '@phosphor-icons/react';
 ---
 
+<style>
+	@reference '@/styles/global.css';
+
+	a {
+		@apply text-muted-foreground border-b border-dashed border-current transition-colors duration-200;
+	}
+	a:hover {
+		@apply border-b-2 border-solid;
+	}
+</style>
+
 <BaseLayout title="Home">
-  <div
-    class="flex min-h-[calc(100vh-12rem)] flex-col items-center justify-center px-4 py-12"
-  >
-    <div class="mx-auto max-w-2xl text-center">
-      <div class="mb-8 flex justify-center">
-        <div class="bg-primary/10 rounded-full p-4">
-          <EnvelopeSimpleIcon
-            className="text-primary size-12"
-            weight="duotone"
-          />
-        </div>
-      </div>
-
-      <h1
-        class="font-heading text-foreground text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl"
-      >
-        Email Campaign Manager
-      </h1>
-
-      <p class="text-muted-foreground mt-6 text-lg">
-        Create, manage, and send email campaigns through simple mailto: links.
-        Perfect for quick email outreach without complex email infrastructure.
-      </p>
-
-      <div
-        class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
-      >
-        <Button asChild size="lg" className="gap-2">
-          <a href="/admin/campaigns">
-            <ShieldCheckIcon data-icon="inline-start" weight="fill" />
-            Admin Dashboard
-          </a>
-        </Button>
-      </div>
-
-      <div class="mt-16 grid gap-6 md:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Create Campaigns</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>
-              Build email campaigns with a rich text editor and manage
-              recipients easily.
-            </CardDescription>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Share Links</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>
-              Generate shareable links that open pre-filled emails in any email
-              client.
-            </CardDescription>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Version Control</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>
-              All campaigns are stored as markdown files in your GitHub
-              repository.
-            </CardDescription>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  </div>
+	<div class="container mx-auto max-w-3xl py-16 text-justify">
+		<h1 class="font-heading text-4xl font-bold tracking-tight">Email Campaign Manager Concept for IFF.</h1>
+		<p class="text-muted-foreground mt-6 text-lg">
+			I sent an email to the <b>Internet Freedom Foundation (IFF)</b> team, with the subject <i
+				>"I WANT TO VOLUNTEER AND I DON'T WANT MONEY"</i
+			>. I might have come off a little too strong there, but that's how passionate I am about their work.
+		</p>
+		<p class="text-muted-foreground mt-6 text-lg">
+			Recently, they started an email campaign with a template body that people could send to MeitY, regarding
+			their <a
+				href="https://internetfreedom.in/iffs-comments-on-the-meitys-proposed-amendments-to-the-2021-it-rules/"
+				target="_blank"
+				>2026 Draft Amendments to the IT Rules</a
+			>. I'm sure this isn't the first time they have had to launch an email campaign like this, and it
+			(sadly) might not be the last.
+		</p>
+		<p class="text-muted-foreground mt-6 text-lg">
+			The campaign version they made this time was a <a
+				href="https://v0.dev"
+				target="_blank"
+				>Vercel v0</a
+			> Application that seemed to be made in a hurry; it was made for the sole purpose of sending this specific
+			email, but the design made it look sketchy. That feeling got stronger when this non-branded website tried
+			to open an app on my phone.
+		</p>
+		<p class="text-muted-foreground mt-6 text-lg">
+			This campaign manager exists for that reason. I want them to be able to spend as little time as possible
+			worrying about the technical aspects of their work, and instead do what they do best; protect our
+			freedom of digital speech.
+		</p>
+		<p class="text-muted-foreground mt-6 text-lg">
+			A template campaign exists <a href="/campaigns/meity-draft-proposal-of-it-rules-second-amendment-2026"
+				>here</a
+			>, and the admin portal can be accessed <a href="/admin/campaigns">here</a>. Peace.
+		</p>
+	</div>
 </BaseLayout>
