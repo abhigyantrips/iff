@@ -110,13 +110,16 @@ function markdownToHtml(markdown: string): string {
     .replace(/\n\n+/g, '\n');
 }
 
-function markdownToPlainText(markdown: string): string {
-  return markdown
-    .replace(/^#{1,6}\s*(.*$)/gim, '$1')
-    .replace(/\*\*(.*?)\*\*/gim, '$1')
-    .replace(/\*(.*?)\*/gim, '$1')
-    .replace(/^\- /gim, '• ')
-    .replace(/^\d+\.\s/gim, '')
+function htmlToPlainText(html: string): string {
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<li>/gi, '\t• ')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\n\n\n+/g, '\n\n')
     .trim();
 }
 
@@ -133,7 +136,7 @@ export function CampaignView({
   const htmlContent = useMemo(() => markdownToHtml(rawContent), [rawContent]);
 
   const plainTextContent = useMemo(
-    () => markdownToPlainText(rawContent),
+    () => htmlToPlainText(rawContent),
     [rawContent]
   );
 

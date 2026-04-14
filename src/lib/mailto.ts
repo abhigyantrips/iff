@@ -15,20 +15,20 @@ export function generateMailtoLink(options: MailtoOptions): string {
   const { to, cc, bcc, subject, body } = options;
 
   const toEmails = to.map((r) => r.email).join(',');
-  const params = new URLSearchParams();
+  const params: string[] = [];
 
-  params.set('subject', subject);
-  params.set('body', body);
+  params.push(`subject=${encodeURIComponent(subject)}`);
+  params.push(`body=${encodeURIComponent(body)}`);
 
   if (cc && cc.length > 0) {
-    params.set('cc', cc.map((r) => r.email).join(','));
+    params.push(`cc=${encodeURIComponent(cc.map((r) => r.email).join(','))}`);
   }
 
   if (bcc && bcc.length > 0) {
-    params.set('bcc', bcc.map((r) => r.email).join(','));
+    params.push(`bcc=${encodeURIComponent(bcc.map((r) => r.email).join(','))}`);
   }
 
-  return `mailto:${toEmails}?${params.toString()}`;
+  return `mailto:${toEmails}?${params.join('&')}`;
 }
 
 export function formatRecipientsDisplay(recipients: Recipient[]): string {
